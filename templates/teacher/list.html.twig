@@ -1,0 +1,60 @@
+
+<h1>nomber de formations : {{formation | length}}</H1>
+<table border="1">
+    
+    <tr>
+<th>ref</th>
+<th>Titre</th>
+<th>Description</th>
+<th>date_debut</th>
+<th>date_fin</th>
+<th>nb_participants</th>
+    </tr>
+{%for ff in formation %}
+<tr>
+<td>{{ff.ref}}</td>
+<td>{{ff.Titre |upper}}</td>
+<td>{{ff.Description}}</td>
+<td>{{ff.date_debut}}</td>
+<td>{{ff.date_fin}}</td>
+<td>{{ff.nb_participants}}</td>
+<td>
+    {% if ff.nb_participants == 0 %}
+      <form action ="{{path('d',{titre:ff.Titre})}}" method="">
+    <input type="submit" value="participer">
+      </form>
+    {% endif %}</td>
+
+</tr>
+{%endfor%}
+</table>
+
+<h2>Titres des formations théoriques :</h2>
+
+  {% for ff in formation %}
+    {% if ff.Description == "formationtheorique" %}
+      <li>{{ ff.Titre|upper }}</li>
+    {% endif %}
+  {% endfor %}
+
+  {% set max_participants = 0 %}
+{% set max_participants_title = '' %}
+
+{% for ff in formation %}
+  {% if ff.nb_participants > max_participants %}
+    {% set max_participants = ff.nb_participants %}
+    {% set max_participants_title = ff.Titre %}
+  {% endif %}
+{% endfor %}
+
+La formation ayant le plus grand nombre de participants est : {{ max_participants_title }}
+<br>
+
+{% set total_participants = 0 %}
+
+{% for ff in formation %}
+  {% set total_participants = total_participants + ff.nb_participants %}
+{% endfor %}
+
+Le nombre total de participants dans toutes les formations est : {{ total_participants }}
+
